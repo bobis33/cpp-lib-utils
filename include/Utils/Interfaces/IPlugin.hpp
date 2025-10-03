@@ -11,6 +11,14 @@
 namespace utl
 {
 
+    enum PluginType : uint8_t {
+        AUDIO = 0,
+        NETWORK = 1,
+        RENDERER = 2,
+        WINDOW = 3,
+        UNDEFINED = 255,
+    };
+
     ///
     /// @interface IPlugin
     /// @brief Interface for plugins
@@ -23,5 +31,7 @@ namespace utl
             virtual ~IPlugin() = default;
 
             [[nodiscard]] virtual const std::string getName() const = 0;
+            [[nodiscard]] virtual const PluginType getType() const = 0;
+
     }; // interface IPlugin
 } // namespace utl

@@ -18,9 +18,9 @@
 #define PLUGINS_EXTENSION ".dll"
 #else
 #include <dlfcn.h>
-#if __APPLE__
+#ifdef __APPLE__
 #define PLUGINS_EXTENSION ".dylib"
-#else
+ifdef __linux__
 #define PLUGINS_EXTENSION ".so"
 #endif
 #endif
@@ -38,7 +38,6 @@ namespace utl
         void *;
 #endif
 
-    /// Handle to a dynamic library with RAII
     struct SharedLib
     {
             LibHandle handle = nullptr;
@@ -77,6 +76,7 @@ namespace utl
 
     using EntryPointFn = IPlugin *(*)();
 
+
     ///
     /// @class PluginLoader
     /// @brief Modern, type-safe plugin loader
@@ -85,6 +85,7 @@ namespace utl
     class PluginLoader
     {
         public:
+
             PluginLoader() = default;
             ~PluginLoader() = default;
 
