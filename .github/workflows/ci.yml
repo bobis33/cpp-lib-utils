@@ -1,0 +1,45 @@
+name: 'CI - Build'
+run-name: 'Build - "${{ github.ref_name }}"'
+on:
+  push:
+    branches:
+      - "main"
+
+  pull_request:
+    branches:
+      - "**"
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ''
+    if: github.actor != 'dependabot[bot]'
+    timeout-minutes: 10
+
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5.0.0
+        with:
+          ref: ${{ github.head_ref }}
+          repository: '${{ github.repository }}'
+          fetch-depth: 1
+          submodules: true
+
+      - name: install cmake
+        env:
+          VERSION: "4.0.0"
+        run: |
+          wget https://github.com/Kitware/CMake/releases/download/v${{ env.VERSION }}/cmake-${{ env.VERSION }}-linux-x86_64.tar.gz
+          tar -xzf cmake-${{ env.VERSION }}-linux-x86_64.tar.gz
+          sudo cp -r cmake-${{ env.VERSION }}-linux-x86_64/bin/* /usr/local/bin/
+          sudo cp -r cmake-${{ env.VERSION }}-linux-x86_64/share/* /usr/local/share/
+          sudo apt update && sudo apt install -y cmake 
+
+      - name: Build release
+        run: |
+          cmake -S . -B cmake-build-release -G "Ninja" -DCMAKE_BUILD_TYPE="Release" 
+          cmake --build cmake-build-release --target all
