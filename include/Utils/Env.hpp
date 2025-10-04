@@ -7,9 +7,9 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 namespace utl
 {
-    [[nodiscard]] std::vector<std::string> getEnv(const char *const *env);
+    [[nodiscard]] std::unordered_map<std::string, std::string> getEnvMap(const char *const *env);
 } // namespace utl

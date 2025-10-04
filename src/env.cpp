@@ -1,26 +1,41 @@
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-#include "Utils/Env.hpp"
-
-std::vector<std::string> utl::getEnv(const char *const *envp)
+std::unordered_map<std::string, std::string> getEnvMap(const char *const *env)
 {
+    std::unordered_map<std::string, std::string> cpyEnv;
+
 #ifdef _WIN32
     LPCH envStrings = GetEnvironmentStringsA();
     if (!envStrings)
-        return 1;
-
-    for (LPCH var = envStrings; *var; var += strlen(var) + 1)
     {
-        std::cout << var << "\n";
+        return cpyEnv;
+    }
+
+    for (LPCH var = envStrings; *var; var += std::strlen(var) + 1)
+    {
+        std::string entry(var);
+        if (const auto pos = entry.find('='); pos != std::string::npos)
+        {
+            cpyEnv.emplace(entry.substr(0, pos), entry.substr(pos + 1));
+        }
     }
 
     FreeEnvironmentStringsA(envStrings);
-#elif __unix__
-
+#else
+    for (const char *const *current = env; (current != nullptr) && (*current != nullptr); ++current)
+    {
+        std::string entry(*current);
+        if (const auto pos = entry.find('='); pos != std::string::npos)
+        {
+            cpyEnv.emplace(entry.substr(0, pos), entry.substr(pos + 1));
+        }
+    }
 #endif
+
+    return cpyEnv;
 }
