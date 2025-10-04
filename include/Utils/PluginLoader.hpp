@@ -20,7 +20,7 @@
 #include <dlfcn.h>
 #ifdef __APPLE__
 #define PLUGINS_EXTENSION ".dylib"
-ifdef __linux__
+#elif __linux__
 #define PLUGINS_EXTENSION ".so"
 #endif
 #endif
@@ -61,8 +61,10 @@ namespace utl
 
             void close()
             {
-                if (!handle)
+                if (handle == nullptr)
+                {
                     return;
+                }
 #ifdef _WIN32
                 FreeLibrary(handle);
 #else
@@ -76,7 +78,6 @@ namespace utl
 
     using EntryPointFn = IPlugin *(*)();
 
-
     ///
     /// @class PluginLoader
     /// @brief Modern, type-safe plugin loader
@@ -85,7 +86,6 @@ namespace utl
     class PluginLoader
     {
         public:
-
             PluginLoader() = default;
             ~PluginLoader() = default;
 
@@ -105,22 +105,30 @@ namespace utl
                 std::scoped_lock lock(m_mutex);
 
                 if (m_plugins.contains(path))
+                {
                     throw std::runtime_error("Plugin already loaded: " + path);
+                }
 
                 SharedLib lib = loadLibrary(path);
                 const EntryPointFn entry = getEntryPoint(lib, path);
 
                 std::unique_ptr<IPlugin> plugin(entry());
                 if (!plugin)
+                {
                     throw std::runtime_error("EntryPoint failed: " + path);
+                }
 
                 T *typed = dynamic_cast<T *>(plugin.get());
                 if (!typed)
+                {
                     throw std::runtime_error("Plugin type mismatch: " + path);
+                }
 
                 auto [it, inserted] = m_plugins.emplace(path, std::move(plugin));
                 if (!inserted)
+                {
                     throw std::runtime_error("Failed to store plugin: " + path);
+                }
 
                 m_handles[path] = std::move(lib);
 
@@ -143,8 +151,10 @@ namespace utl
 #else
                     dlopen(path.c_str(), RTLD_LAZY);
 #endif
-                if (!handle)
+                if (handle == nullptr)
+                {
                     throw std::runtime_error("Cannot load library: " + path);
+                }
                 return SharedLib(handle);
             }
 
@@ -156,8 +166,10 @@ namespace utl
 #else
                     reinterpret_cast<EntryPointFn>(dlsym(lib.handle, "entryPoint"));
 #endif
-                if (!entry)
+                if (entry == nullptr)
+                {
                     throw std::runtime_error("EntryPoint not found in plugin: " + path);
+                }
                 return entry;
             }
     };

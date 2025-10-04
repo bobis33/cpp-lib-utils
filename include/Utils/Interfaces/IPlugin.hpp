@@ -11,7 +11,8 @@
 namespace utl
 {
 
-    enum PluginType : uint8_t {
+    enum PluginType : uint8_t
+    {
         AUDIO = 0,
         NETWORK = 1,
         RENDERER = 2,
