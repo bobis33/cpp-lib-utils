@@ -79,7 +79,7 @@ if [[ "$RUN_FORMAT" == "OFF" ||
 fi
 
 if [[ "$RUN_FORMAT" == "ON" ]]; then
-    BUILD_TARGETS+=("clang-format")
+    BUILD_TARGETS+=("utils-clang-format")
 fi
 
 if [[ ${#BUILD_TARGETS[@]} -eq 0 ]]; then

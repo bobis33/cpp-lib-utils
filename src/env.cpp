@@ -1,11 +1,14 @@
 #include <string>
 #include <unordered_map>
+#include <cstring>
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-std::unordered_map<std::string, std::string> getEnvMap(const char *const *env)
+#include "Utils/Env.hpp"
+
+std::unordered_map<std::string, std::string> utl::getEnvMap(const char *const *env)
 {
     std::unordered_map<std::string, std::string> cpyEnv;
 

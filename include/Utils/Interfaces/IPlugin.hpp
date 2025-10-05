@@ -31,8 +31,8 @@ namespace utl
         public:
             virtual ~IPlugin() = default;
 
-            [[nodiscard]] virtual const std::string getName() const = 0;
-            [[nodiscard]] virtual const PluginType getType() const = 0;
+            [[nodiscard]] virtual std::string getName() const = 0;
+            [[nodiscard]] virtual PluginType getType() const = 0;
 
     }; // interface IPlugin
 } // namespace utl

@@ -25,6 +25,6 @@ string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+"
         ${GIT_TAG}
 )
 configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake/config/Version.hpp.in"
+        "${TEMPLATE_PATH}"
         "${PATH_VERSION}"
 )

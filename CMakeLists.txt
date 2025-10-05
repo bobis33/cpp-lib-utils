@@ -6,17 +6,24 @@ project(utils
         LANGUAGES CXX
 )
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
+
 set(PATH_VERSION "${INCLUDE_DIR}/Utils/Generated/Version.hpp")
+set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/cmake/config/Version.hpp.in")
+file(GLOB_RECURSE FILES_TO_FORMAT
+        "${CMAKE_SOURCE_DIR}/src/*.cpp"
+        "${CMAKE_SOURCE_DIR}/include/*.hpp"
+)
 
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/Utils/*.hpp")
 
 include(ClangTidy)
 include(ClangFormat)
+include(MakeVersion)
 
 add_library(${PROJECT_NAME} STATIC)
 
