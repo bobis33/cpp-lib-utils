@@ -6,18 +6,26 @@
 
 #pragma once
 
+#include <cstdint>
 #include <string>
 
 namespace utl
 {
 
-    enum PluginType : uint8_t
+    enum class PluginType : uint8_t
     {
         AUDIO = 0,
         NETWORK = 1,
         RENDERER = 2,
         WINDOW = 3,
         UNDEFINED = 255,
+    };
+
+    enum PluginPlatform : uint8_t {
+        LINUX = 0,
+        MACOSX = 1,
+        WINDOWS = 2,
+        ALL = 255
     };
 
     ///
@@ -33,6 +41,7 @@ namespace utl
 
             [[nodiscard]] virtual std::string getName() const = 0;
             [[nodiscard]] virtual PluginType getType() const = 0;
+            [[nodiscard]] virtual PluginPlatform getPlatform() const = 0;
 
     }; // interface IPlugin
 } // namespace utl
