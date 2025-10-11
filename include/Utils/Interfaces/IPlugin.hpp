@@ -21,7 +21,8 @@ namespace utl
         UNDEFINED = 255,
     };
 
-    enum PluginPlatform : uint8_t {
+    enum PluginPlatform : uint8_t
+    {
         LINUX = 0,
         MACOSX = 1,
         WINDOWS = 2,

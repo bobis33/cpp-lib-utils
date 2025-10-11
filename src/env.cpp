@@ -1,6 +1,6 @@
+#include <cstring>
 #include <string>
 #include <unordered_map>
-#include <cstring>
 
 #ifdef _WIN32
 #include <windows.h>

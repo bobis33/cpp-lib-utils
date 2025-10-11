@@ -78,7 +78,6 @@ namespace utl
 
     using EntryPointFn = IPlugin *(*)();
 
-
     ///
     /// @class PluginLoader
     /// @brief Modern, type-safe plugin loader
@@ -87,7 +86,6 @@ namespace utl
     class PluginLoader
     {
         public:
-
             PluginLoader() = default;
             ~PluginLoader() = default;
 
