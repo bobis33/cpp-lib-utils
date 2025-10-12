@@ -153,7 +153,13 @@ namespace utl
 #endif
                 if (handle == nullptr)
                 {
-                    throw std::runtime_error("Cannot load library: " + path);
+                    const std::string dlErrorMsg =
+#ifdef _WIN32
+                        "LoadLibraryA failed";
+#else
+                        dlerror();
+#endif
+                    throw std::runtime_error("Cannot load library: " + dlErrorMsg + "\nWith path: " + path);
                 }
                 return SharedLib(handle);
             }

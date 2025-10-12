@@ -84,10 +84,17 @@ namespace utl
 
             [[nodiscard]] static std::string formatLogMessage(LogLevel level, const std::string &message)
             {
-                const auto inTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+                using namespace std::chrono;
+
+                const auto now = system_clock::now();
+                const auto inTimeT = system_clock::to_time_t(now);
+                const auto ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
+
                 std::ostringstream ss;
-                ss << "[" << std::put_time(std::localtime(&inTime), "%Y-%m-%d %X") << "] ";
+                ss << "[" << std::put_time(std::localtime(&inTimeT), "%Y-%m-%d %H:%M:%S");
+                ss << ":" << std::setfill('0') << std::setw(3) << ms.count() << "] ";
                 ss << "[" << LOG_LEVEL_STRING[static_cast<uint8_t>(level)] << "] " << message;
+
                 return ss.str();
             }
 
